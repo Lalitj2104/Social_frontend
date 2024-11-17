@@ -18,6 +18,11 @@ const LoginOtpRequest = createAction('LOGIN_OTP_REQUEST');
 const LoginOtpSuccess=createAction('LOGIN_OTP_SUCCESS');
 const LoginOtpFailure =createAction('LOGIN_OTP_FAILURE');
 
+const RegisterOtpRequest = createAction('REGISTER_OTP_REQUEST');
+const RegisterOtpSuccess=createAction('REGISTER_OTP_SUCCESS');
+const RegisterOtpFailure =createAction('REGISTER_OTP_FAILURE');
+
+
 const clearError= createAction("CLEAR_ERROR");
 const clearMessage=createAction("CLEAR_MESSAGE");
 
@@ -56,6 +61,18 @@ export const userAuthReducer =createReducer(initialState,(builder)=>{
         state.id=action.payload.id;
     })
     .addCase(userRegisterFailure,(state,action)=>{
+        state.loading=false;
+        state.error=action.payload;
+    })
+    .addCase(RegisterOtpRequest,(state)=>{
+        state.loading=true;
+    })
+    .addCase(RegisterOtpSuccess,(state,action)=>{
+        state.loading=false;
+        state.message=action.payload;
+        // state.id=action.payload.id;
+    })
+    .addCase(RegisterOtpFailure,(state,action)=>{
         state.loading=false;
         state.error=action.payload;
     })

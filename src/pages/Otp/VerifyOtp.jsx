@@ -4,7 +4,7 @@ import '../../Styles/Register.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import toastOptions from '../../constants/toast';
-import { verifyLoginOtp } from '../../Redux/Actions/userActions';
+import {  verifyRegisterOtp } from '../../Redux/Actions/userActions';
 
 const VerifyOtp = () => {
     const spans = Array.from({ length: 128 });
@@ -12,6 +12,7 @@ const VerifyOtp = () => {
     const [otp,setOtp]=useState();
     const dispatch=useDispatch();
     const navigate=useNavigate();
+
     const {id}=useParams();
 
     const {loading,message,error} =useSelector(state=>state.userAuth);
@@ -23,14 +24,15 @@ const VerifyOtp = () => {
             toast.error("OTP must contain 6 digits",toastOptions)
             return
         }
-        dispatch(verifyLoginOtp(id,otp));
+        dispatch(verifyRegisterOtp(id,otp));
     }
 
     useEffect(()=>{
         if(message){
             toast.success(message,toastOptions);
             dispatch({type:"CLEAR_MESSAGE"});
-            navigate("/");
+            console.log()
+            navigate(`/`);
         }
         if(error){
             toast.error(error,toastOptions);
