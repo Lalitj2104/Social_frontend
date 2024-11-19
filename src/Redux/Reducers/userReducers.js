@@ -22,6 +22,14 @@ const RegisterOtpRequest = createAction('REGISTER_OTP_REQUEST');
 const RegisterOtpSuccess=createAction('REGISTER_OTP_SUCCESS');
 const RegisterOtpFailure =createAction('REGISTER_OTP_FAILURE');
 
+const ResendLoginOtpRequest=createAction('RESEND_LOGIN_OTP_REQUEST');
+const ResendLoginOtpSuccess=createAction('RESEND_LOGIN_OTP_SUCCESS') ;
+const ResendLoginOtpFailure=createAction('RESEND_LOGIN_OTP_FALIURE');
+
+const ResendRegisterOtpRequest=createAction('RESEND_REGISTER_OTP_REQUEST');
+const ResendRegisterOtpSuccess=createAction('RESEND_REGISTER_OTP_SUCCESS') ;
+const ResendRegisterOtpFailure=createAction('RESEND_REGISTER_OTP_FALIURE');
+
 
 const clearError= createAction("CLEAR_ERROR");
 const clearMessage=createAction("CLEAR_MESSAGE");
@@ -46,11 +54,12 @@ export const userAuthReducer =createReducer(initialState,(builder)=>{
     .addCase(LoginOtpSuccess,(state,action)=>{
         state.loading=false;
         state.message=action.payload;
-        // state.id=action.payload.id;
+        state.isAuthenticated=true;
     })
     .addCase(LoginOtpFailure,(state,action)=>{
         state.loading=false;
         state.error=action.payload;
+        state.isAuthenticated=false;
     })
     .addCase(userRegisterRequest,(state)=>{
         state.loading=true;
@@ -70,11 +79,34 @@ export const userAuthReducer =createReducer(initialState,(builder)=>{
     .addCase(RegisterOtpSuccess,(state,action)=>{
         state.loading=false;
         state.message=action.payload;
-        // state.id=action.payload.id;
+        state.isAuthenticated=true;
     })
     .addCase(RegisterOtpFailure,(state,action)=>{
         state.loading=false;
         state.error=action.payload;
+        state.isAuthenticated=false;
+    })
+    .addCase(ResendLoginOtpRequest,(state)=>{
+        state.loading=true;
+    })
+    .addCase(ResendLoginOtpSuccess,(state,action)=>{
+        state.loading=false;
+        state.message=action.payload
+    })
+    .addCase(ResendLoginOtpFailure,(state,action)=>{
+        state.loading=false;
+        state.error=action.payload
+    })
+    .addCase(ResendRegisterOtpRequest,(state)=>{
+        state.loading=true;
+    })
+    .addCase(ResendRegisterOtpSuccess,(state,action)=>{
+        state.loading=false;
+        state.message=action.payload
+    })
+    .addCase(ResendRegisterOtpFailure,(state,action)=>{
+        state.loading=false;
+        state.error=action.payload
     })
     .addCase(clearError,(state)=>{
         state.error=null;

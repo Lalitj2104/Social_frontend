@@ -19,6 +19,9 @@ const Path = () => {
     
   },[])
 
+  useEffect(()=>{
+
+  },[])
 
   return <div>
     <Router>

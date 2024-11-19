@@ -9,7 +9,7 @@ import toastOptions from "../../constants/toast";
 const Register = () => {
   const spans = Array.from({ length: 128 });
   const dispatch = useDispatch();
-    const navigate=useNavigate();
+  const navigate = useNavigate();
   const [details, setDetails] = useState({
     firstName: "",
     middleName: "",
@@ -23,7 +23,7 @@ const Register = () => {
     avatar: null,
   });
 
-  const { loading, message, error, id } = useSelector(
+  const { loading, message, error, id, isAuthenticated } = useSelector(
     (state) => state.userAuth
   );
   const handleChange = (e) => {
@@ -66,14 +66,17 @@ const Register = () => {
       // console.log(message);
       toast.success(message, toastOptions);
       dispatch({ type: "CLEAR_MESSAGE" });
-      navigate(`/verify/${id}`)
+      navigate(`/verify/${id}`);
     }
     if (error) {
       // console.log(error);
       toast.error(error, toastOptions);
       dispatch({ type: "CLEAR_ERROR" });
     }
-  }, [dispatch, message, error]);
+    if (isAuthenticated) {
+      navigate("/");
+    }
+  }, [dispatch, message, error, isAuthenticated, navigate]);
 
   return (
     <section>

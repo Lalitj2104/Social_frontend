@@ -12,7 +12,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
   const navigate=useNavigate();
-  const { loading, message, error,id } = useSelector((state) => state.userAuth);
+  const { loading, message, error,id ,isAuthenticated} = useSelector((state) => state.userAuth);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -34,7 +34,10 @@ const Login = () => {
       toast.error(error, toastOptions);
       dispatch({ type: "CLEAR_ERROR" });
     }
-  }, [dispatch, message, error]);
+    if(isAuthenticated){
+      navigate('/')
+  }
+  }, [dispatch, message, error,isAuthenticated,navigate]);
 
   
   return (

@@ -4,7 +4,7 @@ import '../../Styles/Register.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import toastOptions from '../../constants/toast';
-import {  verifyRegisterOtp } from '../../Redux/Actions/userActions';
+import {  resendLoginOtp, verifyRegisterOtp } from '../../Redux/Actions/userActions';
 
 const VerifyOtp = () => {
     const spans = Array.from({ length: 128 });
@@ -15,7 +15,7 @@ const VerifyOtp = () => {
 
     const {id}=useParams();
 
-    const {loading,message,error} =useSelector(state=>state.userAuth);
+    const {loading,message,error,isAuthenticated} =useSelector(state=>state.userAuth);
 
     const handleSubmit=(e)=>{
         e.preventDefault();
@@ -26,19 +26,26 @@ const VerifyOtp = () => {
         }
         dispatch(verifyRegisterOtp(id,otp));
     }
+    const handleResendOtp=()=>{
+        dispatch(resendLoginOtp(id));
+    }
 
     useEffect(()=>{
+        
         if(message){
             toast.success(message,toastOptions);
             dispatch({type:"CLEAR_MESSAGE"});
-            console.log()
-            navigate(`/`);
+            // console.log()
+            // navigate(`/`);
         }
         if(error){
             toast.error(error,toastOptions);
             dispatch({type:"CLEAR_ERROR"});
         }
-    },[dispatch,error,message])
+        if(isAuthenticated){
+            navigate("/")
+        }
+    },[dispatch,error,message,navigate,isAuthenticated])
 
     return (
         <section>
@@ -60,7 +67,7 @@ const VerifyOtp = () => {
                                 <i>OTP</i>
                             </div>
                             <div className="links">
-                                <Link to="/login">
+                                <Link to={`/verify/${id}`} onClick={handleResendOtp}>
                                     Resend OTP
                                 </Link>
                             </div>
