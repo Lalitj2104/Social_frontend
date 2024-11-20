@@ -1,44 +1,80 @@
 import React, { useEffect, useState } from "react";
-import { BrowserRouter as Router,Route,Routes } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
 import Home from "../pages/Home";
 import LoadingPage from "../Components/Loading/Loading.jsx";
 import LoginOtp from "../pages/Otp/LoginOtp.jsx";
 import VerifyOtp from "../pages/Otp/VerifyOtp.jsx";
-
+import { useDispatch, useSelector } from "react-redux";
+import ProtectedRoute from "./ProtectedRoute.jsx";
+import AuthRoute from "./AuthRoute.jsx";
+import { loadUser } from "../Redux/Actions/userActions.js";
 
 const Path = () => {
 
-  const [loading,setLoading] =useState(true);
+  const dispatch = useDispatch();
 
-  useEffect(()=>{
-    setTimeout(()=>{
-      setLoading(false)
-    },1000)
-    
-  },[])
 
-  useEffect(()=>{
+  const { userLoading} = useSelector(state => state.userAuth);
 
-  },[])
 
-  return <div>
-    <Router>
-    {loading ?
-      <LoadingPage/>
-    :
-    (<Routes>
-            <Route path="/" element={<Home/>}/>
-            <Route path="/login" element={<Login/>}/>
-            <Route path="/register" element={<Register/>}/> 
-            <Route path="/login/:id" element={<LoginOtp/>}/>
-            <Route path="/verify/:id" element={<VerifyOtp/>} />
-        </Routes>)
-    }
-        
-    </Router>
-  </div>;
+  return (
+    <div>
+      <Router>
+        {userLoading ? (
+          <Loading />
+        ) : (
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <ProtectedRoute>
+                  <Home />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/login"
+              element={
+                <AuthRoute>
+                  <Login />
+                </AuthRoute>
+              }
+            />
+
+            <Route
+              path="/register"
+              element={
+                <AuthRoute>
+                  <Register />
+                </AuthRoute>
+              }
+            />
+
+            <Route
+              path="/login/:id"
+              element={
+                <AuthRoute>
+                  <LoginOtp />
+                </AuthRoute>
+              }
+            />
+
+            <Route
+              path="/verify/:id"
+              element={
+                <AuthRoute>
+                  <VerifyOtp />
+                </AuthRoute>
+              }
+            />
+          </Routes>
+        )}
+      </Router>
+    </div>
+  );
 };
 
 export default Path;

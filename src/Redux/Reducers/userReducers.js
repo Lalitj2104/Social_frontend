@@ -24,14 +24,19 @@ const RegisterOtpFailure =createAction('REGISTER_OTP_FAILURE');
 
 const ResendLoginOtpRequest=createAction('RESEND_LOGIN_OTP_REQUEST');
 const ResendLoginOtpSuccess=createAction('RESEND_LOGIN_OTP_SUCCESS') ;
-const ResendLoginOtpFailure=createAction('RESEND_LOGIN_OTP_FALIURE');
+const ResendLoginOtpFailure=createAction('RESEND_LOGIN_OTP_FAILURE');
 
 const ResendRegisterOtpRequest=createAction('RESEND_REGISTER_OTP_REQUEST');
 const ResendRegisterOtpSuccess=createAction('RESEND_REGISTER_OTP_SUCCESS') ;
-const ResendRegisterOtpFailure=createAction('RESEND_REGISTER_OTP_FALIURE');
+const ResendRegisterOtpFailure=createAction('RESEND_REGISTER_OTP_FAILURE');
 
+const loadUserRequest=createAction('LOAD_USER_REQUEST');
+const loadUserSuccess=createAction('LOAD_USER_SUCCESS') ;
+const loadUserFailure=createAction('LOAD_USER_FAILURE');
 
 const clearError= createAction("CLEAR_ERROR");
+const clearAuthError= createAction("CLEAR_AUTH_ERROR");
+
 const clearMessage=createAction("CLEAR_MESSAGE");
 
 export const userAuthReducer =createReducer(initialState,(builder)=>{
@@ -108,11 +113,28 @@ export const userAuthReducer =createReducer(initialState,(builder)=>{
         state.loading=false;
         state.error=action.payload
     })
+    .addCase(loadUserRequest,(state)=>{
+        state.userLoading=true;
+    })
+    .addCase(loadUserSuccess,(state,action)=>{
+        state.userLoading=false;
+        state.user=action.payload;
+        state.isAuthenticated=true;
+    })
+    .addCase(loadUserFailure,(state,action)=>{
+        state.userLoading=false;
+        state.authError=action.payload;
+        state.isAuthenticated=false;
+    })
+
     .addCase(clearError,(state)=>{
         state.error=null;
     })
     .addCase(clearMessage,(state)=>{
         state.message=null;
+    })
+    .addCase(clearAuthError,(state)=>{
+        state.authError=null;
     })
 
 })

@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { BACKEND_URL } from '../../constants/url';
 
+axios.defaults.withCredentials=true;
 
 const URL=BACKEND_URL+"api/v1/user";
 
@@ -144,8 +145,27 @@ export const resendRegisterOtp=(id)=>async(dispatch)=>{
 
     } catch (error) {
         dispatch({
-            type:"RESEND_REGISTER_OTP_Failure",
+            type:"RESEND_REGISTER_OTP_FAILURE",
             payload:error?.response?.data?.message
+        })
+    }
+}
+
+export const loadUser=()=>async(dispatch)=>{
+    try {
+        dispatch({
+            type:"LOAD_USER_REQUEST"
+        })
+        const {data} =await axios.get(`${URL}/me`)
+        dispatch({
+            type:"LOAD_USER_SUCCESS",
+            payload:data.message,
+        })
+        
+    } catch (error) {
+        dispatch({
+            type:"LOAD_USER_FAILURE",
+            payload:error.response?.data?.message
         })
     }
 }

@@ -11,8 +11,10 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
-  const navigate=useNavigate();
-  const { loading, message, error,id ,isAuthenticated} = useSelector((state) => state.userAuth);
+  const navigate = useNavigate();
+  const { loading, message, error, id, isAuthenticated } = useSelector(
+    (state) => state.userAuth
+  );
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -27,19 +29,18 @@ const Login = () => {
       dispatch({
         type: "CLEAR_MESSAGE",
       });
-      navigate(`/login/${id}`)
+      navigate(`/login/${id}`);
     }
     if (error) {
       console.log(error);
       toast.error(error, toastOptions);
       dispatch({ type: "CLEAR_ERROR" });
     }
-    if(isAuthenticated){
-      navigate('/')
-  }
-  }, [dispatch, message, error,isAuthenticated,navigate]);
+    if (isAuthenticated) {
+      navigate("/");
+    }
+  }, [dispatch, message, error, isAuthenticated, id, navigate]);
 
-  
   return (
     <section>
       <div className="login-cont">
@@ -74,13 +75,12 @@ const Login = () => {
               </div>
               <div className="inputBx">
                 <button type="submit" disabled={loading}>
-                {
-                    loading===true?
-                    <span className="spinner"></span>:
+                  {loading === true ? (
+                    <span className="spinner"></span>
+                  ) : (
                     "Login"
-                }
+                  )}
                 </button>
-                
               </div>
             </form>
           </div>
